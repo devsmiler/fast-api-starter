@@ -1,4 +1,4 @@
 # fast-api-starter
 
 
-## Life is short. You need Python🚀
+## Life is short. You need Python 🚀
