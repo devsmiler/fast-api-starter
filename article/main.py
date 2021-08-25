@@ -1,9 +1,10 @@
-from sqlalchemy.sql.functions import mode
 from fastapi import FastAPI, Depends, status, Response, HTTPException
 from schemas import Article
+import schemas
 import models
 from database import engine, SessionLocal
 from sqlalchemy.orm import Session
+import uvicorn
 
 app = FastAPI()
 
@@ -44,14 +45,17 @@ def all(id: int, response: Response, db: Session = Depends(get_db)):
         )
     return article
 
+
 @app.put("/article/{id}")
-def update(id, req: Article, db: Session = Depends(get_db)):
-    article = db.query(models.Article).filter(models.Article.id==id).update({"title":"hi there"})
-    db.commit()
+def update(id: int, req: schemas.Article, db: Session = Depends(get_db)):
+    # article = db.query(models.Article).filter(models.Article.id == id).update({"title":req.title, "body":req.body})
+    print(req)
+    t = db.query(models.Article).filter(models.Article.id == id).first()
+
     # if not article.first():
     #     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"article id :{id} not found")
     # print(article)
-    # article.update(req)
+    t.update(req)
     # db.commit()
     return "Updated"
 
@@ -65,3 +69,6 @@ def destory(id: int, response: Response, db: Session = Depends(get_db)):
     )
     db.commit()
     return article
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
