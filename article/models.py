@@ -11,7 +11,10 @@ class Article(Base):
     body = Column(String)
     user_id = Column(Integer, ForeignKey("users.id"))
 
-    writer = relationship("User", back_populates="articles",)
+    writer = relationship(
+        "User",
+        back_populates="articles",
+    )
 
 
 class User(Base):
@@ -22,4 +25,7 @@ class User(Base):
     email = Column(String)
     password = Column(String)
 
-    articles = relationship("Article", back_populates="writer",)
+    articles = relationship(
+        "Article",
+        back_populates="writer",
+    )
